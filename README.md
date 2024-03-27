@@ -3,7 +3,8 @@ It is a Todo App, i used Room, Coroutines, MVVM Architecuture, Material 3, live 
 
 # Features 
 * Create Tasks
+* Read Tasks
 * Check uncheck
-* Update Task
-* Delete Task  
+* Update Tasks
+* Delete Tasks 
 

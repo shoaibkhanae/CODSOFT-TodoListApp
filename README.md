@@ -19,6 +19,7 @@ It is a Todo App, i used Room, Coroutines, MVVM Architecuture, Material 3, live 
 * Views, XML
 
 # Screenshots
+![Todo App Screenshot](https://github.com/shoaibkhanae/CODSOFT-TodoListApp/assets/147998474/e975c9f5-6f4c-4a11-96f3-ac605cbc417f)
 
 
 

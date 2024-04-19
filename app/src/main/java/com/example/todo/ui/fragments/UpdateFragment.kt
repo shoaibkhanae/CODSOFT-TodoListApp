@@ -52,8 +52,8 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.etUpdateTitle.hint = title
-        binding.etUpdateDescription.hint = description
+        binding.etUpdateTitle.setText(title)
+        binding.etUpdateDescription.setText(description)
 
         // go to home screen with updates
         binding.updateButton.setOnClickListener { updateTask() }

@@ -25,23 +25,28 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_description_title"
+        android:id="@+id/til_todo_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="1000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/base_margin"
         app:layout_constraintTop_toBottomOf="@id/til_todo_title">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_description"
+            android:id="@+id/et_Description"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
             android:hint="@string/description"
-            android:singleLine="true"
-            android:inputType="text" />
+            android:singleLine="false"
+            android:minLines="3"
+            android:maxLines="5"
+            android:maxLength="1000"
+            android:inputType="textMultiLine"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/done_button"

@@ -27,6 +27,8 @@
         android:id="@+id/til_todo_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="1000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_todo_title">
@@ -34,8 +36,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_update_description"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:minLines="3"
+            android:maxLines="5"
+            android:maxLength="1000"
+            android:singleLine="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

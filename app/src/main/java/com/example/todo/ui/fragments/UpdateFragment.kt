@@ -44,7 +44,7 @@ class UpdateFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentUpdateBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -52,6 +52,7 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Got updated data from home screen
         binding.etUpdateTitle.setText(title)
         binding.etUpdateDescription.setText(description)
 

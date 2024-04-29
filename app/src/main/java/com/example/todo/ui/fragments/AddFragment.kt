@@ -29,7 +29,7 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -37,21 +37,24 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.doneButton.setOnClickListener {
+        binding.submitButton.setOnClickListener { taskSubmitted() }
+    }
 
-            val title = binding.etTitle.text.toString()
-            val description = binding.etDescription.text.toString()
+    private fun taskSubmitted() {
 
-            if (title.isEmpty()) {
-                setUpError(true)
-            } else{
-                setUpError(false)
+        val title = binding.etTitle.text.toString()
+        val description = binding.etDescription.text.toString()
 
-                val item = Item(title = title, description = description)
-                shareViewModel.insert(item)
-                Toast.makeText(requireContext(),"Task inserted.",Toast.LENGTH_SHORT).show()
-                goToHomeScreen()
-            }
+        if (title.isEmpty()) {
+            setUpError(true)
+        } else{
+            setUpError(false)
+
+            val item = Item(title = title, description = description)
+            shareViewModel.insert(item)
+
+            Toast.makeText(requireContext(),"Task inserted.",Toast.LENGTH_SHORT).show()
+            goToHomeScreen()
         }
     }
 

@@ -34,13 +34,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        binding.addButton.setOnClickListener { goToAddScreen() }
+    }
+
+    private fun setupUI() {
         val adapter = TodoListAdapter(shareViewModel)
         binding.recyclerview.adapter = adapter
 
         shareViewModel.allItems.observe(viewLifecycleOwner) {items ->
             adapter.submitList(items)
         }
-        binding.addButton.setOnClickListener { goToAddScreen() }
     }
 
 

@@ -11,6 +11,7 @@ import com.example.todo.R
 import com.example.todo.adapter.TodoListAdapter
 import com.example.todo.databinding.FragmentHomeBinding
 import com.example.todo.ui.factory.TodoViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,8 +38,62 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val adapter = TodoListAdapter(shareViewModel)
+        val adapter = TodoListAdapter()
         binding.recyclerview.adapter = adapter
+
+        /**
+         * when any item is clicked we are going to update fragment
+         * getting the current item
+         * going to update fragment
+         * with arguments
+         */
+        adapter.setOnItemClickListener(object : TodoListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val current = adapter.currentList[position]
+
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToUpdateFragment(current.id,current.title,current.description)
+                findNavController().navigate(action)
+            }
+        })
+
+        /**
+         * when any checkbox is clicked we are updating the item
+         * getting the current item
+         * changing its state of checked
+         * update it in database
+         */
+        adapter.setOnCheckboxClickListener(object : TodoListAdapter.OnCheckBoxClickListener {
+            override fun onCheckboxClick(position: Int, isChecked: Boolean) {
+                val current = adapter.currentList[position]
+                if (isChecked) {
+                    current.checked = 1
+                } else {
+                    current.checked = 0
+                }
+                shareViewModel.update(current)
+            }
+        })
+
+        /**
+         * when any item delete button clicked deleting that from database
+         * getting current item
+         * deleting from database
+         * if undo press insert that item again
+         */
+        adapter.setOnDeleteClickListener(object : TodoListAdapter.OnDeleteClickListener{
+            override fun onDeleteClick(position: Int) {
+                val current = adapter.currentList[position]
+                shareViewModel.delete(current)
+
+                Snackbar.make(binding.recyclerview,"Task Deleted.",Snackbar.LENGTH_LONG).apply {
+                    setAction("undo") {
+                        shareViewModel.insert(current)
+                    }
+                }.show()
+            }
+
+        })
 
         shareViewModel.allItems.observe(viewLifecycleOwner) {items ->
             adapter.submitList(items)

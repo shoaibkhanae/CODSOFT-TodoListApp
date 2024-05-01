@@ -6,19 +6,14 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.R
 import com.example.todo.data.Item
-import com.example.todo.ui.factory.TodoViewModel
-import com.example.todo.ui.fragments.HomeFragmentDirections
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.snackbar.Snackbar
 
-class TodoListAdapter(private val viewModel: TodoViewModel):
-    ListAdapter<Item,TodoListAdapter.TodoViewHolder>(ItemsComparator()) {
+class TodoListAdapter: ListAdapter<Item,TodoListAdapter.TodoViewHolder>(ItemsComparator()) {
 
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val card: MaterialCardView = view.findViewById(R.id.todo_card)
@@ -40,6 +35,34 @@ class TodoListAdapter(private val viewModel: TodoViewModel):
         }
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    interface OnCheckBoxClickListener {
+        fun onCheckboxClick(position: Int, isChecked: Boolean)
+    }
+
+    interface OnDeleteClickListener {
+        fun onDeleteClick(position: Int)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+    private var onCheckboxClickListener: OnCheckBoxClickListener? = null
+    private var onDeleteClickListener: OnDeleteClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
+    }
+
+    fun setOnCheckboxClickListener(listener: OnCheckBoxClickListener) {
+        this.onCheckboxClickListener = listener
+    }
+
+    fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+        this.onDeleteClickListener = listener
+    }
+
     class ItemsComparator : DiffUtil.ItemCallback<Item>() {
         override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
             return oldItem == newItem
@@ -59,26 +82,16 @@ class TodoListAdapter(private val viewModel: TodoViewModel):
         val current = getItem(position)
         holder.bind(current)
 
-        holder.card.setOnClickListener {
-
-            val action = HomeFragmentDirections
-                .actionHomeFragmentToUpdateFragment(current.id,current.title,current.description)
-            holder.itemView.findNavController().navigate(action)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.onItemClick(position)
         }
 
-        holder.title.setOnClickListener {
-            if (holder.title.isChecked) current.checked = 1 else current.checked = 0
-            viewModel.update(current)
+        holder.title.setOnCheckedChangeListener { _, isChecked ->
+            onCheckboxClickListener?.onCheckboxClick(position, isChecked)
         }
 
         holder.deleteButton.setOnClickListener {
-            viewModel.delete(current)
-
-            Snackbar.make(it,"Task deleted.",Snackbar.LENGTH_SHORT).apply {
-                setAction("Undo") {
-                    viewModel.insert(current)
-                }
-            }.show()
+            onDeleteClickListener?.onDeleteClick(position)
         }
     }
 }

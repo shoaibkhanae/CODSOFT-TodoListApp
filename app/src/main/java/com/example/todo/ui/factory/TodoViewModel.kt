@@ -6,10 +6,15 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.Item
 import com.example.todo.repository.ItemRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TodoViewModel(private val repository: ItemRepository): ViewModel() {
+@HiltViewModel
+class TodoViewModel @Inject constructor(
+    private val repository: ItemRepository
+): ViewModel() {
     val allItems = repository.allWords.asLiveData()
 
     fun insert(item: Item) {
@@ -26,14 +31,5 @@ class TodoViewModel(private val repository: ItemRepository): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.update(item)
         }
-    }
-}
-
-class TodoViewModelFactory(private val repository: ItemRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TodoViewModel::class.java)) {
-            return TodoViewModel(repository) as T
-        }
-        throw IllegalArgumentException("unknown viewModel class")
     }
 }

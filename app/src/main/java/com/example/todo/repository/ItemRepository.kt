@@ -3,8 +3,9 @@ package com.example.todo.repository
 import com.example.todo.data.Item
 import com.example.todo.data.ItemDao
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ItemRepository(private val itemDao: ItemDao) {
+class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
 
     val allWords: Flow<List<Item>> = itemDao.getAllItems()
 
